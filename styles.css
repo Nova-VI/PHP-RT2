@@ -1,0 +1,128 @@
+* {
+    padding: 0;
+    margin: 0;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif
+}
+
+body {
+    min-height: 100vh;
+}
+
+.top {
+    background-color: #222327;
+    overflow: hidden;
+    position: sticky;
+    top: 0;
+    width: 100%;
+    height: fit-content;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    padding: 40px 0 0 0;
+}
+
+.navigation {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: fit-content;
+    height: 70px;
+    background-color: white;
+    border-radius: 20px 20px 0 0;
+    padding: 0 35px;
+}
+
+.navigation ul {
+    display: flex;
+
+}
+
+.navigation ul li {
+    position: relative;
+    list-style: none;
+    width: 70px;
+    height: 70px;
+    z-index: 1;
+}
+
+.navigation ul li a {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    text-align: center;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.navigation ul li a .icon {
+    position: relative;
+    line-height: 75px;
+    display: block;
+    font-size: 1.5em;
+    text-align: center;
+    transition: 0.5s;
+    color: #111;
+}
+
+.navigation ul li.active a .icon {
+    transform: translateY(-35px);
+}
+
+.navigation ul li a .text {
+    position: absolute;
+    font-size: .75em;
+    letter-spacing: 0.05em;
+    transition: 0.5s;
+    color: #111;
+    font-weight: 400;
+    opacity: 0;
+    transform: translateY(20px);
+    user-select: none;
+}
+
+.navigation ul li.active a .text {
+    transform: translateY(10px);
+    opacity: 1;
+}
+
+.indicator {
+    position: absolute;
+    width: 70px;
+    height: 70px;
+    top: -50%;
+    background-color: #0bfc03;
+    border-radius: 50%;
+    border: 6px solid #222327;
+    box-sizing: border-box;
+    transition: .35s;
+}
+
+.indicator::before {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    top: 50%;
+    left: -22px;
+    border-top-right-radius: 20px;
+    box-shadow: 0 -10px 0 0 #222327;
+}
+
+.indicator::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    top: 50%;
+    right: -22px;
+    border-top-left-radius: 20px;
+    box-shadow: 0 -10px 0 0 #222327;
+}
+
+.content {
+    padding: 10px;
+}
