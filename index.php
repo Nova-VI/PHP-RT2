@@ -1,6 +1,7 @@
 <?php
 function generate_element($url, $icon, $text)
 {
+
     echo "
     <li class=\"list\">
         <a  value=\"$url\">
@@ -10,8 +11,7 @@ function generate_element($url, $icon, $text)
     </li>";
 }
 session_start();
-$_SESSION['user'] = "admin";
-$_SESSION['user_type'] = "admin";
+
 ?>
 
 <!DOCTYPE html>

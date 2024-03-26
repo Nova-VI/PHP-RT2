@@ -1,51 +1,27 @@
-<?php
 
-if($_SERVER["REQUEST_METHOD"]=="POST"){
-    session_start();
-    $errors=array();
-    $email = htmlspecialchars($_POST["email"]);
-    $password = htmlspecialchars($_POST["password"]);
-
-
-    if(empty($email)){
-        $errors["email"]="email is required";
-    }
-    if(empty($password)){
-        $errors["password"]="password is required";
-    }
-    if(!filter_var($email,FILTER_VALIDATE_EMAIL)){
-       $errors["email"]="enter a valid email";
-    }
-    if($errors){
-        $_SESSION["errors"]=$errors;
-        header("Location: login.php");
-        exit();
-    }
-    else {
-        require "db.inc.php";
-
-        $bdd = ConnexionBd::getInstance();
-
-        $query = "SELECT * FROM users WHERE email=:email";
-
-        $stmt = $bdd->prepare($query);
-        $stmt->execute(array(':email' => $email));
-        $result = $stmt->fetchAll();
-
-
-        if (!$result) {
-           $errors["credentials"]="Wrong credentials";
-            header("Location: ../html/login.php");
-            exit();
-        } else {
-            if (!password_verify($password, $result[0]["password"])) {
-                die ("incorrect credentials");
-            } else {
-                $_SESSION["user"]="user";
-                $_SESSION["user-type"]=$result["role"];
-                $_SESSION["user-entity"]=$result;
-                header("Location:../html/profile.html");
-            }
-        }
-    }
-}
+    <div class="container mt-5 col-4 bg-light p-4 rounded-3 shadow">
+        <form action="login.action.php" method="post">
+            <div class="mb-3">
+                <label for="emailfield" class="form-label">Email address</label>
+                <input type="email" class="form-control" id="emailfield" aria-describedby="emailHelp"
+                    placeholder="Enter Ur Email" required autofocus name="email">
+                <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+            </div>
+            <div class="mb-3">
+                <label for="passwordfield" class="form-label">Password</label>
+                <input type="password" class="form-control" id="passwordfield" aria-describedby="passwordHelpBlock"
+                    name="password">
+                <div id="passwordHelpBlock" class="form-text">
+                    Your password must be 8-20 characters long, contain letters and numbers, and must not contain
+                    spaces, special
+                    characters, or emoji.
+                </div>
+            </div>
+            <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="exampleCheck1" name="check">
+                <label class="form-check-label" for="exampleCheck1">Check me out</label>
+            </div>
+            <button type="submit" class="btn btn-primary ">Submit</button>
+            <a href=signup.php class="btn btn-secondary">Sign Up</a>
+        </form>
+    </div>

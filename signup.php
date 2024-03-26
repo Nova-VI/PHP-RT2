@@ -1,116 +1,93 @@
-<?php
+<div class="container mt-5 col-4 bg-light p-4 rounded-3 shadow">
 
-
-//
-//if(isset($_SESSION["PHPSESSID"])){
-//    header("Location:profile.html");
-//    die();
-//}
-
-
-if($_SERVER["REQUEST_METHOD"]=="POST"){
-    require_once 'session_config.inc.php';
-    $errors=array();
-    $username = htmlspecialchars($_POST["username"]);
-    $email = htmlspecialchars($_POST["email"]);
-    $password = htmlspecialchars($_POST["password"]);
-    $cpassword = htmlspecialchars($_POST["cpassword"]);
-    $birthdate = htmlspecialchars($_POST["birth"]);
-    $filename = '';
-    if(empty($username)){
-        $errors['username'] = "Username is required";
-    }
-    if(empty($email)){
-        $errors['email'] = array('require'=>'email is required');
-    }
-    if(!filter_var($email,FILTER_VALIDATE_EMAIL)){
-        $errors['email']['format']='enter a valid email';
-    }
-    $pattern = '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s]).{8,}$/';
-
-    if(!preg_match($pattern,$password)){
-        $errors['password']="Password too weak , passwords should be at least 8 chars long , with one lower case, one upper case, one number and one special char";
-    }
-    if($_POST["password"]!=$_POST["cpassword"]){
-        $errors['cpassword']="Password should match";
-    }
-    if(empty($birthdate)){
-        $errors['birthdate']="please enter a valid brith date";
-    }
-
-    if (isset($_FILES["profileimage"]) && $_FILES["profileimage"]["error"] == 0) {
-        $allowed_extensions = array("jpg", "jpeg", "png", "gif");
-        $temp = explode(".", $_FILES["profileimage"]["name"]);
-        $extension = end($temp);
-        if (in_array($extension, $allowed_extensions)) {
-            // Generate a unique filename to prevent overwriting existing files
-            $filename = uniqid() . "." . $extension;
-            move_uploaded_file($_FILES["profileimage"]["tmp_name"],"../assets/images/" . $filename);
-            echo "Image uploaded successfully:../assets/images/" . $filename;
-        }
-
-     else {
-        $errors['extension']="Invalid file extension. Allowed extensions: " . implode(", ", $allowed_extensions);
-     }
-
-    } else {
-        $errors['image']='error uploading the file';
-    }
-
-    if($errors){
-        echo'zebi';
-        $_SESSION["errors"]=$errors;
-        header("Location: ../html/signup.php");
-        exit();
-    }
-
-    else {
-        include 'db.inc.php';
-        $bdd = ConnexionBd::getInstance();
-        $query = "SELECT * FROM users WHERE email=:email";
-
-        $stmt = $bdd->prepare($query);
-        $stmt->execute(array(':email' => $email));
-        $result = $stmt->fetchAll();
-
-        $num_rows = count($result);
-
-        if ($num_rows> 0) {
-            $errors["exist"]="email already exists";
-            $_SESSION["errors"]=$errors;
-            header("Location: ../html/signup.php");
-            exit();
-        }
-        else {
-            $hash = password_hash($password,
-                PASSWORD_DEFAULT);
-            $id = bin2hex(random_bytes(16));
-            $query = "INSERT INTO `users` ( `id`,`username`,  
-                `email`,`password`,`image`,`birthdate`,`role`) VALUES (:id,:username,  
-                :email, :password ,:image,:birthdate,:role)";
-
-            $stmt = $bdd->prepare($query);
-            $role='user';
-            if ($stmt->execute(array(':id' => $id, ':email' => $email, ':username' => $username, ':password' => $hash, ':image' => $filename, ':birthdate' => $birthdate, ':role' => $role))) {
-                // If the insertion was successful
-//                $query = "SELECT * FROM users WHERE email=:email";
-//
-//                $stmt = $bdd->prepare($query);
-//                $stmt->execute(array(':email' => $email));
-//                $result = $stmt->fetchAll();
-                $_SESSION["user"] = "user";
-                $_SESSION["user-type"] = "admin";
-//                $_SESSION["user-entity"]=$result;
-                header("Location: ../html/profile.html");
-                exit();
-            } else {
-                // If an error occurred during insertion
-                $errors["fetch"] = "an error has occurred";
-                $_SESSION["errors"] = $errors;
-                header("Location: ../html/signup.php");
-                exit();
+        <form action="signup.action.php" method="post" enctype="multipart/form-data" novalidate>
+            <?php
+            if(isset($_SESSION['errors']['fetch'])) {
+                echo '<div class="text-danger">' . $_SESSION['errors']['fetch'] . '</div>';
             }
+            ?>
+            <div class="mb-3">
+                <label for="usernamefield" class="form-label">Email address</label>
+                <input type="text" class="form-control" id="usernamefield" aria-describedby="emailHelp"
+                    placeholder="Enter a username" required autofocus name="username" >
+                <?php
+                if(isset($_SESSION['errors']['username'])) {
+                    echo '<div class="text-danger">' . $_SESSION['errors']['username'] . '</div>';
+                }
+                ?>
+            </div>
 
-        }
-    }
-}
+            <div class="mb-3">
+                <label for="emailfield" class="form-label">Email address</label>
+                <input type="email" class="form-control" id="emailfield" aria-describedby="emailHelp"
+                    placeholder="Enter Ur Email" required autofocus name="email" >
+                <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+                <?php
+                if(isset($_SESSION['errors']['email']['require'])) {
+                    echo '<div class="text-danger">' . $_SESSION['errors']['email']['require'] . '</div>';
+                }
+                if(isset($_SESSION['errors']['email']['format'])) {
+                    echo '<div class="text-danger">' . $_SESSION['errors']['email']['format'] . '</div>';
+                }
+                ?>
+            </div>
+            <div class="mb-3">
+                <label for="passwordfield" class="form-label">Password</label>
+                <input type="password" class="form-control" id="passwordfield" aria-describedby="passwordHelpBlock"
+                    name="password" required>
+                <?php
+                if(isset($_SESSION['errors']['password'])) {
+                    echo '<div class="text-danger">' . $_SESSION['errors']['password'] . '</div>';
+                }
+                ?>
+            </div>
+
+            <div class="mb-3">
+                <label for="cpasswordfield" class="form-label">Confirm Password</label>
+                <input type="password" class="form-control" id="cpasswordfield" aria-describedby="passwordHelpBlock"
+                    name="cpassword">
+                <?php
+                if(isset($_SESSION['errors']['cpassword'])) {
+                    echo '<div class="text-danger">' . $_SESSION['errors']['cpassword'] . '</div>';
+                }
+                ?>
+            </div>
+
+            <div class="mb-3">
+                <label for="datefield" class="form-label">Birth Date</label>
+                <input type="date" class="form-control" id="datefield"
+                        required autofocus name="birth" >
+                <?php
+                if(isset($_SESSION['errors']['birthdate'])) {
+                    echo '<div class="text-danger">' . $_SESSION['errors']['birthdate'] . '</div>';
+                }
+                ?>
+            </div>
+
+            <div class="mb-3">
+                <label for="imagefield" class="form-label">Choose Ur Profile Image</label>
+                <input type="file" class="form-control" id="imagefield" aria-describedby="image-picker"
+                       name="profileimage">
+
+                <?php
+                if(isset($_SESSION['errors']['extension'])) {
+                    echo '<div class="text-danger">' . $_SESSION['errors']['extension'] . '</div>';
+                }
+                if(isset($_SESSION['errors']['image'])) {
+                    echo '<div class="text-danger">' . $_SESSION['errors']['image'] . '</div>';
+                }
+                ?>
+            </div>
+
+            <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="exampleCheck1" name="check">
+                <label class="form-check-label" for="exampleCheck1">Remember Me</label>
+            </div>
+            <button type="submit" class="btn btn-primary ">Submit</button>
+            <a href=login.php class="btn btn-secondary">Log In</a>
+            <?php
+            unset($_SESSION["errors"]);
+            ?>
+        </form>
+    </div>
+
