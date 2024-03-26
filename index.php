@@ -10,7 +10,8 @@ function generate_element($url, $icon, $text)
     </li>";
 }
 session_start();
-
+$_SESSION['user'] = "admin";
+$_SESSION['user_type'] = "admin";
 ?>
 
 <!DOCTYPE html>

@@ -72,6 +72,11 @@ body {
     transform: translateY(-35px);
 }
 
+.navigation ul li:not(.active):hover a .icon {
+    transform: translateY(-15px);
+
+}
+
 .navigation ul li a .text {
     position: absolute;
     font-size: .75em;
@@ -84,7 +89,8 @@ body {
     user-select: none;
 }
 
-.navigation ul li.active a .text {
+.navigation ul li.active a .text,
+.navigation ul li:hover a .text {
     transform: translateY(10px);
     opacity: 1;
 }
