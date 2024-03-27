@@ -26,8 +26,9 @@ $tasks = $_SESSION['tasks'];
     <?php
     foreach ($users as $user) :
         if (!strstr(strtoupper($user["username"]), strtoupper($_POST["input"]))) continue;
+        $formatted_user = str_replace(" ", "%20", $user["username"])
     ?>
-        <li onclick="$('.content').load('profile.php?username=<?php echo $user['username'] ?>');"><span class="icon">
+        <li onclick="$('.content').load('profile.php?username=<?php echo $formatted_user ?>');"><span class="icon">
                 <?php if ($user["profile_image"] == "") : ?>
                     <ion-icon name="person-outline"></ion-icon>
                 <?php else : ?>
