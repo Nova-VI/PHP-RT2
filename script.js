@@ -2,7 +2,10 @@ const list = document.querySelectorAll(".list");
 var style = document.createElement("style");
 var css = "";
 for (let i = 0; i < list.length; i++) {
-    css += ".list:nth-child(" + (i + 1) * 1 + ").active ~ .indicator { transform: translateX(" + i * 70 + "px); }";
+    if (list[i].querySelector("a span.text").innerHTML === "Logout")
+        css += ".list:nth-child(" + (i + 1) * 1 + ").active ~ .indicator { transform: translateX(" + i * 70 + "px); background-color:red}";
+    else
+        css += ".list:nth-child(" + (i + 1) * 1 + ").active ~ .indicator { transform: translateX(" + i * 70 + "px); }";
 }
 style.innerHTML = css;
 document.head.appendChild(style);

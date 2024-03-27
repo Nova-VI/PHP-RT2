@@ -32,7 +32,6 @@ session_start();
                 echo "<ul id=\"navListAdmin\">"; ?>
             <?php
                 generate_element("home.php", "home-outline", "Home");
-                generate_element("task_admin.php", "clipboard-outline", "Tasks");
                 generate_element("users.php", "people-outline", "Users");
                 generate_element("dashboard.php", "bar-chart-outline", "Dashboard");
                 generate_element("profile.php", "person-outline", "Profile");

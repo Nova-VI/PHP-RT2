@@ -1,7 +1,8 @@
 * {
     padding: 0;
     margin: 0;
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    box-sizing: border-box;
 }
 
 body {
@@ -130,5 +131,107 @@ body {
 }
 
 .content {
-    padding: 10px;
+    padding: 20px;
+
+}
+
+.content ul {
+    display: flex;
+    flex-direction: column;
+}
+
+.content ul li {
+    margin: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+    text-align: center;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.5s;
+    color: black;
+    border: 2px solid #222327;
+}
+
+.content ul li:hover {
+    background-color: black;
+    color: white;
+}
+
+.content ul li:hover span.final button {
+    background-color: white;
+    color: black;
+}
+
+.content ul li span {
+    flex-basis: 0;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.content ul li span.final {
+    display: flex;
+    justify-content: center;
+}
+
+.content ul li span.final button {
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    margin: 0 40px;
+    width: 100px;
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+    transition: .5s;
+}
+
+.content ul li span.final button:hover {
+    width: 150px;
+}
+
+.content ul li span img {
+    float: left;
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    margin: 10px 20px 10px 10px;
+}
+
+.content ul li span ion-icon {
+    font-size: 75px;
+    float: left;
+    margin: 10px 30px 10px 10px;
+}
+
+.content ul li span.final ion-icon {
+    font-size: 20px;
+    margin: 10px 10px 10px 10px;
+}
+
+.content .search {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.content .search input {
+    width: 70%;
+    height: 60px;
+    border: 3px solid #222327;
+    border-radius: 10px;
+    font-size: 1.5em;
+    margin: 20px;
+    text-align: center;
+    transition: .5s;
+}
+
+.content .search input:hover,
+.content .search input:focus {
+    width: 80%;
 }
