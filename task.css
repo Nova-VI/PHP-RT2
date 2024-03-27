@@ -1,0 +1,40 @@
+.task {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.title {
+    font-weight: bold;
+}
+
+.description {
+    margin-top: 5px;
+}
+
+.buttons {
+    margin-top: 10px;
+}
+
+.delete-btn, .update-btn {
+    padding: 5px 10px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.status {
+    display: inline-block;
+    padding: 3px 6px;
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #fff;
+}
+
+.status-complete {
+    background-color: green;
+}
+
+.status-incomplete {
+    background-color: red;
+}
