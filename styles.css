@@ -161,8 +161,7 @@ body {
 }
 
 .content ul li:hover span.final button {
-    background-color: white;
-    color: black;
+    background-color: red;
 }
 
 .content ul li span {
@@ -206,7 +205,7 @@ body {
 .content ul li span ion-icon {
     font-size: 75px;
     float: left;
-    margin: 10px 30px 10px 10px;
+    margin: 10px 20px 10px 10px;
 }
 
 .content ul li span.final ion-icon {
