@@ -51,8 +51,20 @@ if (isset($_POST['update']) && isset($_POST['taskid']) && isset($_POST['new_titl
     $taskId = $_POST['taskid'];
     $newTitle = $_POST['new_title'];
     $newDescription = $_POST['new_description'];
-    $query = "UPDATE task SET title = :newTitle, description = :newDescription WHERE id = :id";
+    $query = "UPDATE Task SET title = :newTitle, description = :newDescription WHERE id = :id";
     $stmt = $bdd->prepare($query);
     $stmt->execute(array(':id' => $taskId, ':newTitle' => $newTitle, ':newDescription' => $newDescription));
     exit();
 }
+
+if (isset($_POST['finish']) && isset($_POST['taskid'])) {
+    $taskId = $_POST['taskid'];
+    $query = "UPDATE Task SET status = 'Finished' WHERE id = :id";
+    $stmt = $bdd->prepare($query);
+    $stmt->execute(array(':id' => $taskId));
+    exit();
+}
+
+$query = "SELECT * FROM Task ";
+$tasks = $bdd->query($query)->fetchAll(PDO::FETCH_ASSOC);
+$_SESSION['tasks'] = $tasks;

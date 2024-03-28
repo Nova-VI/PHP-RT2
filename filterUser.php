@@ -5,7 +5,7 @@ function taskCompleted($tasks, $user_id)
     $total = 0;
     foreach ($tasks as $task) {
         if ($task["user_id"] != $user_id) continue;
-        if ($task["status"] == "completed") {
+        if ($task["status"] == "Finished") {
             $completed++;
         }
         $total++;
