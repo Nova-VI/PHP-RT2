@@ -1,4 +1,86 @@
-<div class="container mt-5 col-4 bg-light p-4 rounded-3 shadow">
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f8f9fa;
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        max-width: 400px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border: 2px solid black;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+
+    .form-text {
+        font-size: 14px;
+        color: #6c757d;
+        margin-top: 5px;
+    }
+
+    .text-danger:not(:empty) {
+        border: 2px solid #dc3545;
+        color: #dc3545;
+        margin-bottom: 10px;
+        padding: 30px;
+        border-radius: 10px;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        width: 100%;
+        margin: 20px 0;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+
+    .btn-secondary {
+        width: 100%;
+        background-color: #28a745;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        margin-right: 10px;
+    }
+
+    .btn-secondary:hover {
+        background-color: #218838;
+    }
+</style>
+
+<div class="container">
     <div class="text-danger" id="danger"></div>
 
     <form onsubmit="submitForm()" method="post" enctype="multipart/form-data" novalidate>
@@ -7,9 +89,9 @@
             echo '<div class="text-danger">' . $_SESSION['errors']['fetch'] . '</div>';
         }
         ?>
-        <div class="mb-3">
+        <div class="form-group">
             <label for="usernamefield" class="form-label">Username</label>
-            <input type="text" class="form-control" id="usernamefield" aria-describedby="emailHelp" placeholder="Enter a username" required autofocus name="username">
+            <input type="text" class="form-control" id="usernamefield" placeholder="Enter a username" required autofocus name="username">
             <?php
             if (isset($_SESSION['errors']['username'])) {
                 echo '<div class="text-danger">' . $_SESSION['errors']['username'] . '</div>';
@@ -17,10 +99,10 @@
             ?>
         </div>
 
-        <div class="mb-3">
+        <div class="form-group">
             <label for="emailfield" class="form-label">Email address</label>
-            <input type="email" class="form-control" id="emailfield" aria-describedby="emailHelp" placeholder="Enter Ur Email" required autofocus name="email">
-            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+            <input type="email" class="form-control" id="emailfield" placeholder="Enter Your Email" required autofocus name="email">
+            <div class="form-text">We'll never share your email with anyone else.</div>
             <?php
             if (isset($_SESSION['errors']['email']['require'])) {
                 echo '<div class="text-danger">' . $_SESSION['errors']['email']['require'] . '</div>';
@@ -30,9 +112,10 @@
             }
             ?>
         </div>
-        <div class="mb-3">
+
+        <div class="form-group">
             <label for="passwordfield" class="form-label">Password</label>
-            <input type="password" class="form-control" id="passwordfield" aria-describedby="passwordHelpBlock" name="password" required>
+            <input type="password" class="form-control" id="passwordfield" name="password" required>
             <?php
             if (isset($_SESSION['errors']['password'])) {
                 echo '<div class="text-danger">' . $_SESSION['errors']['password'] . '</div>';
@@ -40,9 +123,9 @@
             ?>
         </div>
 
-        <div class="mb-3">
+        <div class="form-group">
             <label for="cpasswordfield" class="form-label">Confirm Password</label>
-            <input type="password" class="form-control" id="cpasswordfield" aria-describedby="passwordHelpBlock" name="cpassword">
+            <input type="password" class="form-control" id="cpasswordfield" name="cpassword">
             <?php
             if (isset($_SESSION['errors']['cpassword'])) {
                 echo '<div class="text-danger">' . $_SESSION['errors']['cpassword'] . '</div>';
@@ -50,7 +133,7 @@
             ?>
         </div>
 
-        <div class="mb-3">
+        <div class="form-group">
             <label for="datefield" class="form-label">Birth Date</label>
             <input type="date" class="form-control" id="datefield" required autofocus name="birth">
             <?php
@@ -60,9 +143,9 @@
             ?>
         </div>
 
-        <div class="mb-3">
-            <label for="imagefield" class="form-label">Choose Ur Profile Image</label>
-            <input type="file" class="form-control" id="imagefield" aria-describedby="image-picker" name="profileimage">
+        <div class="form-group">
+            <label for="imagefield" class="form-label">Choose Your Profile Image</label>
+            <input type="file" class="form-control" id="imagefield" name="profileimage">
 
             <?php
             if (isset($_SESSION['errors']['extension'])) {
@@ -74,15 +157,11 @@
             ?>
         </div>
 
-        <div class="mb-3 form-check">
-            <input type="checkbox" class="form-check-input" id="exampleCheck1" name="check">
-            <label class="form-check-label" for="exampleCheck1">Remember Me</label>
-        </div>
-        <button type="submit" class="btn btn-primary ">Submit</button>
-        <a href=login.php class="btn btn-secondary">Log In</a>
-        <?php
-        unset($_SESSION["errors"]);
-        ?>
+        <button type="submit" class="btn-primary">Submit</button>
+        <button onclick="setActive(list[1])" class="btn-secondary">Log In</a>
+            <?php
+            unset($_SESSION["errors"]);
+            ?>
     </form>
 </div>
 

@@ -1,13 +1,4 @@
 <?php
-
-
-//
-//if(isset($_SESSION["PHPSESSID"])){
-//    header("Location:profile.html");
-//    die();
-//}
-
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     session_start();
     $errors = array();
@@ -52,12 +43,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     if ($errors) {
+        echo "<ul>";
         foreach ($errors as $error) {
-            echo " - " . $error . "<br>";
+            echo "<li>" . $error . "</li>";
         }
         if ($image_error) {
-            echo " - " . $image_error . "<br>";
+            echo " <li> " . $image_error . "</li>";
         }
+        echo "</ul>";
     } else {
         include 'connexion.php';
         $bdd = ConnexionBd::getInstance();
