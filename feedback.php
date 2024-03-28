@@ -1,9 +1,11 @@
-f<style>
+<style>
     table {
         width: 100%;
         border-collapse: collapse;
     }
-    th, td {
+
+    th,
+    td {
         padding: 8px;
         text-align: left;
         border-bottom: 1px solid #ddd;
@@ -22,21 +24,26 @@ f<style>
     </thead>
     <tbody>
         <?php
-        require_once 'connexion.php'; // Include the file for database connection
-        $cnx = ConnexionBD::getInstance(); // Create a database connection instance
+        session_start();
+        if (isset($_SESSION['feedbacks']) && isset($_SESSION['users'])) {
+            $feedbacks = $_SESSION['feedbacks'];
+            $users = $_SESSION['users'];
+        } else {
+            require_once 'connexion.php'; // Include the file for database connection
+            $cnx = ConnexionBD::getInstance(); // Create a database connection instance
+            $query = "select * from Feedback";
+            $feedbacks = $cnx->query($query)->fetchAll(PDO::FETCH_ASSOC);
+            $_SESSION['feedbacks'] = $feedbacks;
+            $query = "select * from users";
+            $users = $cnx->query($query)->fetchAll(PDO::FETCH_ASSOC);
+            $_SESSION['users'] = $users;
+        }
 
-        // Perform SQL query
-        $sql1 = "SELECT `Submission text`, `User_Id`, `Date` FROM `Feedback`";
-        $stmt1 = $cnx->query($sql1);
-
+        $feedbacks = array_reverse($feedbacks); // Reverse the array (newest feedbacks first)
         // Fetch and display data in table
-        if ($stmt1->rowCount() > 0) {
-            while ($row = $stmt1->fetch(PDO::FETCH_ASSOC)) {
-                // Get user details from the users table based on the User_Id
-                $userId = $row['User_Id'];
-                $sql2 = "SELECT `username`, `email` FROM `users` WHERE `id`= '$userId'";
-                $stmt2 = $cnx->query($sql2);
-                $userRow = $stmt2->fetch(PDO::FETCH_ASSOC);
+        if (count($feedbacks) > 0) {
+            foreach ($feedbacks as $row) {
+                $userRow = $users[array_search($row['User_Id'], array_column($users, 'id'))];
 
                 echo "<tr>";
                 echo "<td>" . $row['Submission text'] . "</td>";
