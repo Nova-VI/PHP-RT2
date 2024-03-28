@@ -7,26 +7,21 @@ function addTask() {
     var description = document.getElementById("task-description").value;
     var end_date = document.getElementById("end_date").value;
 
-    // Validate input
     if (title.trim() === '' || description.trim() === '' || end_date.trim() === '') {
         alert("Please fill in all fields.");
         return;
     }
 
-    // Create a new task object
     var taskData = {
         title: title,
         description: description,
         end_date: end_date
     };
 
-    // Convert task data to JSON string
     var jsonData = JSON.stringify(taskData);
 
-    // Create a new XMLHttpRequest object
     var xhr = new XMLHttpRequest();
 
-    // Configure the XMLHttpRequest
     xhr.open("POST", "task_list.php", true);
     xhr.setRequestHeader("Content-Type", "application/json");
 
@@ -37,10 +32,8 @@ function addTask() {
                 var taskElement = document.createElement('div');
                 taskElement.classList.add('task');
 
-                // Set data-task-id attribute (assuming you don't have ID for new task yet)
                 taskElement.setAttribute('data-task-id', 'new');
 
-                // Create inner HTML for the task
                 taskElement.innerHTML = `
         <div class="title">${title}</div>
         <div class="description">${description}</div>
@@ -51,24 +44,20 @@ function addTask() {
         </div>
     `;
 
-                // Append the new task element to the task container
                 var taskContainer = document.getElementById("task-container");
                 taskContainer.appendChild(taskElement);
 
-                // Optionally, you can clear the input fields after adding the task
                 document.getElementById("task-title").value = '';
                 document.getElementById("task-description").value = '';
                 document.getElementById("end_date").value = '';
 
                 alert("Task added successfully");
             } else {
-                // Handle error response from the server
                 alert('Error: ' + xhr.status);
             }
         }
     };
 
-    // Send the XMLHttpRequest with the task data
     xhr.send(jsonData);
 }
 
@@ -81,7 +70,6 @@ function deleteTask(taskId) {
         xhr.onreadystatechange = function() {
             if (xhr.readyState === XMLHttpRequest.DONE) {
                 if (xhr.status === 200) {
-                    // Remove the deleted task from the DOM
                     var taskElement = document.querySelector(".task[data-task-id='" + taskId + "']");
                     if (taskElement) {
                         taskElement.parentNode.removeChild(taskElement);
@@ -119,14 +107,12 @@ function updateTask(taskId, newTitle, newDescription) {
     xhr.open("POST", "task_list.php", true);
     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
-    // Construct the data to be sent in the request
     var data = "update=true&taskid=" + taskId + "&new_title=" + newTitle + "&new_description=" + newDescription;
 
     xhr.onreadystatechange = function() {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
                 var taskElement = document.querySelector(".task[data-task-id='" + taskId + "']");
-                // Update title and description inside the task element
                 var titleElement = taskElement.querySelector(".title");
                 var descriptionElement = taskElement.querySelector(".description");
                 if (titleElement && descriptionElement) {
@@ -134,13 +120,12 @@ function updateTask(taskId, newTitle, newDescription) {
                     descriptionElement.textContent = newDescription;
                 }
                 alert(xhr.responseText); // Show response message
-                // Optionally, you can update the task in the DOM here
             } else {
                 alert('Error: ' + xhr.status);
             }
         }
     };
-    xhr.send(data); // Send the request with the data
+    xhr.send(data); 
 }
 
 

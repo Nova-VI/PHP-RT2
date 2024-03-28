@@ -10,7 +10,7 @@
 
     ////querying the tasks from the database
     try {
-        $query = "SELECT * FROM Task WHERE user_id=:id";
+        $query = "SELECT * FROM task WHERE user_id=:id";
         $stmt = $bdd->prepare($query);
         $stmt->execute(array(':id' => $user_id));
         $result = $stmt->fetchAll();
@@ -29,7 +29,7 @@
         $title = $taskData['title'];
         $description = $taskData['description'];
         $end_date = $taskData['end_date'];
-        $query = "INSERT INTO `Task` ( `id`,`title`,  
+        $query = "INSERT INTO `task` ( `id`,`title`,  
                 `description`,`creation_date`,`end_date`,`status`,`user_id`) VALUES (:id,:title,  
                 :description, :creation_date ,:end_date,:status,:user_id)";
         $stmt = $bdd->prepare($query);
@@ -40,7 +40,7 @@
 
     if(isset($_POST["delete"]) && isset($_POST['taskid'])) {
         $taskId = $_POST['taskid'];
-        $query = "DELETE FROM Task WHERE id=:id";
+        $query = "DELETE FROM task WHERE id=:id";
         $stmt = $bdd->prepare($query);
         $stmt->execute(array(':id' => $taskId)); // Corrected variable name to match JavaScript
     }
@@ -51,7 +51,7 @@
                 $taskId = $_POST['taskid'];
                 $newTitle = $_POST['new_title'];
                 $newDescription = $_POST['new_description'];
-                $query = "UPDATE Task SET title = :newTitle, description = :newDescription WHERE id = :id";
+                $query = "UPDATE task SET title = :newTitle, description = :newDescription WHERE id = :id";
                 $stmt = $bdd->prepare($query);
                 $stmt->execute(array(':id' => $taskId,':newTitle'=>$newTitle,':newDescription'=>$newDescription));
                 exit();
