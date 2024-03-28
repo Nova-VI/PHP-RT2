@@ -61,6 +61,9 @@ if (isset($_POST['finish']) && isset($_POST['taskid'])) {
     $query = "UPDATE Task SET status = 'Finished' WHERE id = :id";
     $stmt = $bdd->prepare($query);
     $stmt->execute(array(':id' => $taskId));
+    $query = "UPDATE Task SET completion_date = :completion_date WHERE id = :id";
+    $stmt = $bdd->prepare($query);
+    $stmt->execute(array(':id' => $taskId, ':completion_date' => date("Y-m-d")));
 }
 
 $query = "SELECT * FROM Task ";
