@@ -26,7 +26,7 @@ function addTask() {
     xhr.setRequestHeader("Content-Type", "application/json");
 
     // Set up the event handler for when the XMLHttpRequest completes
-    xhr.onreadystatechange = function() {
+    xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
                 var taskElement = document.createElement('div');
@@ -50,8 +50,6 @@ function addTask() {
                 document.getElementById("task-title").value = '';
                 document.getElementById("task-description").value = '';
                 document.getElementById("end_date").value = '';
-
-                alert("Task added successfully");
             } else {
                 alert('Error: ' + xhr.status);
             }
@@ -67,14 +65,13 @@ function deleteTask(taskId) {
         var xhr = new XMLHttpRequest();
         xhr.open("POST", "task_list.php", true);
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        xhr.onreadystatechange = function() {
+        xhr.onreadystatechange = function () {
             if (xhr.readyState === XMLHttpRequest.DONE) {
                 if (xhr.status === 200) {
                     var taskElement = document.querySelector(".task[data-task-id='" + taskId + "']");
                     if (taskElement) {
                         taskElement.parentNode.removeChild(taskElement);
                     }
-                    alert(xhr.responseText); // Show response message
                 } else {
                     alert('Error: ' + xhr.status);
                 }
@@ -109,7 +106,7 @@ function updateTask(taskId, newTitle, newDescription) {
 
     var data = "update=true&taskid=" + taskId + "&new_title=" + newTitle + "&new_description=" + newDescription;
 
-    xhr.onreadystatechange = function() {
+    xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
                 var taskElement = document.querySelector(".task[data-task-id='" + taskId + "']");
@@ -119,13 +116,13 @@ function updateTask(taskId, newTitle, newDescription) {
                     titleElement.textContent = newTitle;
                     descriptionElement.textContent = newDescription;
                 }
-                alert(xhr.responseText); // Show response message
+
             } else {
                 alert('Error: ' + xhr.status);
             }
         }
     };
-    xhr.send(data); 
+    xhr.send(data);
 }
 
 
