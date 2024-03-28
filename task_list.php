@@ -54,7 +54,6 @@ if (isset($_POST['update']) && isset($_POST['taskid']) && isset($_POST['new_titl
     $query = "UPDATE Task SET title = :newTitle, description = :newDescription WHERE id = :id";
     $stmt = $bdd->prepare($query);
     $stmt->execute(array(':id' => $taskId, ':newTitle' => $newTitle, ':newDescription' => $newDescription));
-    exit();
 }
 
 if (isset($_POST['finish']) && isset($_POST['taskid'])) {
@@ -62,7 +61,6 @@ if (isset($_POST['finish']) && isset($_POST['taskid'])) {
     $query = "UPDATE Task SET status = 'Finished' WHERE id = :id";
     $stmt = $bdd->prepare($query);
     $stmt->execute(array(':id' => $taskId));
-    exit();
 }
 
 $query = "SELECT * FROM Task ";

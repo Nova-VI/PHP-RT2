@@ -100,6 +100,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $result = $stmt->fetchAll();
                 $_SESSION["user"] = $username;
                 $_SESSION["user_type"] = $role;
+                $_SESSION["user_entity"] = $result[0];
                 header("Location: index.php");
                 exit();
             } else {

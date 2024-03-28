@@ -1,12 +1,3 @@
-<h2>Filter tasks</h2>
-</div>
-<input type="text" class="form-control" id="live_search" autocomplete="off" placeholder="Search...">
-</div>
-<div>
-    <button type="button" onclick="sortByTitle()">Sort Alphabetically</button>
-    <button type="button" onclick="sortByDate()">Sort by Date</button>
-</div>
-
 <style>
     #task-container {
         margin-top: 20px;
@@ -131,16 +122,68 @@
         border-color: #4CAF50;
     }
 
-    #add-task {
+    .control-panel {
         display: flex;
-        align-items: center;
         justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    #filter-task {
+        margin-right: 10px;
+        width: fit-content;
+        padding: 0 0 0 40px;
+        border-left: 1px solid #ccc;
+    }
+
+    #add-task {
+        display: inline-block;
+        margin-right: 10px;
+        width: fit-content;
+
+    }
+
+    #add-task td {
+        padding: 0 20px;
+        align-items: center;
+        vertical-align: middle;
+
+    }
+
+    #add-task td button {
+        width: 100%;
     }
 </style>
 
+<div class="control-panel">
 
-
-</style>
+    <table id="add-task">
+        <tr>
+            <th>
+                <h1>Add task</h1>
+            </th>
+            <td><input type="text" id="task-title" placeholder="Enter task title" name="title"></td>
+            <td><textarea style="resize: none" id="task-description" placeholder="Enter task description" name="description"></textarea></td>
+        </tr>
+        <tr>
+            <th>
+                <h1>End Date</h1>
+            </th>
+            <td><input type="date" id="end_date" name="end_date" value="<?php echo date("Y-m-d"); ?>"></td>
+            <td><button type="submit" onclick="addTask()" name="add">Add Task</button></td>
+        </tr>
+    </table>
+    <div id="filter-task">
+        <h2>Filter tasks</h2>
+        <div>
+            <input type="text" class="form-control" id="live_search" autocomplete="off" placeholder="Search...">
+        </div>
+        <div>
+            <button type="button" onclick="sortByTitle()">Sort Alphabetically</button>
+            <button type="button" onclick="sortByDate()">Sort by Date</button>
+        </div>
+    </div>
+</div>
 <div id="task-container">
     <?php
     include 'task_list.php';
@@ -162,7 +205,7 @@
             <div class="buttons">
                 <button type="button" class="delete-btn" onclick="deleteTask('<?php echo $result[$i]['id'] ?>')">Delete</button>
                 <button type="button" class="update-btn" onclick="updateTaskPrompt('<?php echo $result[$i]['id'] ?>','<?php echo $result[$i]['title'] ?>','<?php echo $result[$i]['description'] ?>')">Update</button>
-                <button type="button" class="finish-btn" onclick="finishTask('<?php echo $result[$i]['id'] ?>')" <?php if ($result[$i]["status"] == "Finished" || $result[$i]["status"] == "Overdue") echo "disabled"; ?>>Finish</button>
+                <button type="button" class="finish-btn" onclick="finishTask('<?php echo $result[$i]['id'] ?>')" <?php if ($result[$i]["status"] == "Finished" || $result[$i]["status"] == "Overdue") echo "disabled"; ?>>Done</button>
                 <div class="status <?php if ($result[$i]["status"] == "Finished") echo "status-complete";
                                     else if ($result[$i]["status"] == "In Progress") echo "status-progress";
                                     else echo "status-overdue" ?>"><?php echo $result[$i]["status"] ?></div>
@@ -174,12 +217,7 @@
     ?>
 
 </div>
-<div id="add-task">
-    <input type="text" id="task-title" placeholder="Enter task title" name="title">
-    <textarea id="task-description" placeholder="Enter task description" name="description"></textarea>
-    <input type="date" id="end_date" name="end_date">End Date
-    <button type="submit" onclick="addTask()" name="add">Add Task</button>
-</div>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
 <script>

@@ -5,8 +5,15 @@
         align-items: center;
         flex-direction: column;
         text-align: center;
-        padding: 30px;
-        width: 100%;
+        width: fit-content;
+        margin: 50px;
+    }
+
+    .content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
     }
 
     .home-page .guest-view {
@@ -37,10 +44,21 @@
         color: blue;
     }
 
+    .home-page .user-view {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        width: 800px;
+        border-radius: 20px;
+        overflow: hidden;
+    }
+
     .home-page .user-view h1 {
 
-        font-size: 4em;
-        margin: 50px;
+        font-size: 3em;
+        margin: 20px;
+
     }
 
     .home-page .user-view p {
@@ -48,16 +66,33 @@
         margin: 20px;
     }
 
-    .home-page .user-view ul {
-        float: left;
-        display: flex;
-        flex-direction: column;
+    .home-page .user-view table {
+        width: 100%;
+        table-layout: fixed;
     }
 
-    .home-page .user-view ul li {
-        float: left;
+    .home-page .user-view table th,
+    #head {
         text-align: left;
-        font-size: 1.4em;
+        background-color: #242424;
+        color: white;
+        padding: 20px;
+
+    }
+
+    #head {
+        font-size: 1em;
+        text-align: center;
+        background-color: #202020;
+    }
+
+    .home-page .user-view table td:not(#head) {
+        text-align: center;
+        background-color: #303030;
+        color: white;
+        padding: 10px;
+        font-size: 20px;
+        font-weight: bold;
     }
 </style>
 <div class="home-page">
@@ -102,49 +137,78 @@
         }
     ?>
         <div class="user-view">
-            <h1>Welcome back, <?php echo $_SESSION['user_entity']['username'] ?>.</h1>
-            <p>You have <?php echo $counter ?> out of <?php echo $total ?> tasks completed.</p>
-            <?php if ($total != 0) : ?>
-                <p>Here are your tasks:</p>
-                <ul>
-                    <?php foreach ($tasks as $task) {
+            <table cellspacing=0>
+                <tr>
+                    <td colspan="4" id="head">
+                        <h1>Welcome back, <?php echo $_SESSION['user_entity']['username'] ?>.</h1>
+                        <p>You have <?php echo $counter ?> out of <?php echo $total ?> tasks completed.</p>
+                    </td>
+                </tr>
+                <?php if ($total != 0) : ?>
 
-
-                        if ($task['user_id'] == $_SESSION['user_entity']['id']) {
+                    <tr>
+                        <th style="text-align: center;">Task Title</th>
+                        <th style="text-align: center;">Task Description</th>
+                        <th style="text-align: center;">End Date</th>
+                        <th style="text-align: center;">Status</th>
+                    </tr>
+                    <?php foreach ($tasks as $task) : ?>
+                        <?php if ($task['user_id'] == $_SESSION['user_entity']['id']) :
                             if ($task['status'] == "Finished")
-                                echo "<li style='color:green'>" . $task['title'] . "</li>";
-                            else if ($task['status'] == "In Progress")
-                                echo "<li style='color:#f39c12'>" . $task['title'] . "</li>";
+                                $statusColor = "green";
+                            else if ($task['status'] == "Overdue")
+                                $statusColor = "red";
                             else
-                                echo "<li style='color:red'>" . $task['title'] . "</li>";
-                        }
-                    } ?>
-                </ul>
+                                $statusColor = "yellow";
+
+                        ?>
+                            <tr>
+                                <td class="user-td"><?php echo $task['title'] ?></td>
+                                <td class="user-td"><?php echo $task['description'] ?></td>
+                                <td class="user-td"><?php echo $task['end_date'] ?></td>
+                                <td class="user-td" style="color:<?php echo $statusColor ?>"><?php echo $task['status'] ?></td>
+                            </tr>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+            </table>
         </div>
 <?php
-            endif;
-            return;
-        }
-        $number_of_users = count($users);
-        $number_of_tasks = count($tasks);
-        $finished_tasks = 0;
-        foreach ($tasks as $task) {
-            if ($task['status'] == "Finished")
-                $finished_tasks++;
-        }
-        $number_of_feedbacks = 0;
-        $number_of_feedbacks = count($feedbacks);
+                endif;
+                return;
+            }
+            $number_of_users = count($users);
+            $number_of_tasks = count($tasks);
+            $finished_tasks = 0;
+            foreach ($tasks as $task) {
+                if ($task['status'] == "Finished")
+                    $finished_tasks++;
+            }
+            $number_of_feedbacks = 0;
+            $number_of_feedbacks = count($feedbacks);
 ?>
 <div class="user-view">
-    <h1>Welcome, Admin <?php echo $_SESSION["user"] ?>.</h1>
-    <p>Here are some statistics:</p>
-    <ul>
-        <li>Total number of users: <?php echo $number_of_users; ?></li>
-        <li>Total number of tasks: <?php echo $number_of_tasks; ?></li>
-        <li>Number of finished tasks: <?php echo $finished_tasks; ?></li>
-        <li>Total number of feedbacks: <?php echo $number_of_feedbacks; ?></li>
-        <li style="list-style-type: none;padding-top:50px"><a onclick="setActive(list[1])" href="#">View users</a></li>
-        <li style="list-style-type: none;"><a onclick="setActive(list[4])" href="#">View feedbacks</a></li>
-    </ul>
+    <table cellspacing=0>
+        <tr>
+            <td colspan="2" id="head">
+                <h1>Welcome, Admin <?php echo $_SESSION["user"] ?>.</h1>
+            </td>
+        </tr>
+        <tr>
+            <th>Total number of users</th>
+            <td><?php echo $number_of_users; ?></td>
+        </tr>
+        <tr>
+            <th>Total number of tasks</th>
+            <td><?php echo $number_of_tasks; ?></td>
+        </tr>
+        <tr>
+            <th>Number of finished tasks</th>
+            <td><?php echo $finished_tasks; ?></td>
+        </tr>
+        <tr>
+            <th>Total number of feedbacks</th>
+            <td><?php echo $number_of_feedbacks; ?></td>
+        </tr>
+    </table>
 </div>
 </div>

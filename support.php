@@ -1,10 +1,14 @@
-<form onsubmit="a()">
-    <label for="feedback">Feedback:</label><br>
-    <textarea id="feedback" name="feedback" rows="4" cols="50" required></textarea><br><br>
-    <input type="submit" value="Submit">
-</form>
+<div class="form-container">
+    <form onsubmit="a()">
+        <label class="form-label" for="feedback">Feedback:</label><br>
+        <textarea id="feedback" name="feedback" rows="4" cols="50" class="form-textarea" required></textarea><br><br>
+        <div id="submit-message" class="submit-message"></div>
+        <input type="submit" value="Submit" class="form-submit">
+    </form>
+
+</div>
+
 <script>
-    //simulate get method ( 7asb klem aymen khatro y9olk ekteb el code wmyfsrlkch chyamel)
     function a() {
         event.preventDefault();
         text = document.getElementById("feedback").value;
@@ -37,14 +41,60 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         // Bind parameters
         if ($stmt->execute(array(':feedback' => $feedback, ':user_id' => $user_id))) {
             // If insertion is successful, display confirmation message
-            echo "<p>Thank you for your feedback.</p>";
+            echo "<script>document.getElementById('submit-message').innerHTML='Thank you for your feedback.'</script>";
         } else {
             // If insertion fails, display error message
             echo "<p>Error: Failed to insert feedback.</p>";
         }
-    } else {
-        // If feedback is not provided, display an error message
-        echo "<p>Please provide your feedback.</p>";
     }
 }
 ?>
+
+<style>
+    .form-container {
+        max-width: 500px;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+        border: 2px solid black;
+    }
+
+    .form-label {
+        font-weight: bold;
+        margin: 40px 20px;
+    }
+
+    .form-textarea {
+        width: 100%;
+        padding: 10px;
+        margin: 20px 0 10px;
+        box-sizing: border-box;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        resize: vertical;
+    }
+
+    .form-submit {
+        background-color: #4CAF50;
+        color: white;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        width: 100%;
+        transition: 0.5s;
+    }
+
+    .form-submit:hover {
+        background-color: #45a049;
+    }
+
+    .submit-message:not(:empty) {
+        font-weight: bold;
+        font-size: 1em;
+        margin: 0 10px 40px 0;
+        color: green;
+    }
+</style>

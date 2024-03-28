@@ -1,26 +1,9 @@
 
-
-
-
 function addTask() {
     var title = document.getElementById("task-title").value;
     var description = document.getElementById("task-description").value;
     var end_date = document.getElementById("end_date").value;
-    var taskStatus = "";
-    var today = new Date();
-    var taskStat = "";
-    if (new Date(end_date) < today) {
-        taskStatus = "status-overdue";
-        taskStat = "Overdue";
-    }
-    else {
-        taskStatus = "status-progress";
-        taskStat = "In Progress";
-    }
-    var buttonStatus = "";
-    if (taskStatus === "status-overdue") {
-        buttonStatus = "disabled";
-    }
+
     if (title.trim() === '' || description.trim() === '' || end_date.trim() === '') {
         alert("Please fill in all fields.");
         return;
@@ -31,7 +14,9 @@ function addTask() {
         description: description,
         end_date: end_date
     };
-
+    let button = document.querySelector("button[name='add']")
+    button.onclick = null; //to prevent multiple clicks.
+    button.style.cursor = "wait";
     var jsonData = JSON.stringify(taskData);
 
     var xhr = new XMLHttpRequest();
@@ -43,29 +28,8 @@ function addTask() {
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
-                var taskElement = document.createElement('div');
-                taskElement.classList.add('task');
-
-                taskElement.setAttribute('data-task-id', 'new');
-
-                taskElement.innerHTML = `
-        <div class="title">${title}</div>
-        <div class="description">${description}</div>
-        <div class="end_date">${end_date}</div>
-        <div class="buttons">
-            <button type="button" class="delete-btn" onclick="deleteTask('new')">Delete</button>
-            <button type="button" class="update-btn" onclick="updateTask('new')">Update</button>
-            <button type="button" class="finish-btn" onclick="finishTask('new')" ${buttonStatus}>Finish</button>
-            <div class="status ${taskStatus}">${taskStat}</div>
-        </div>
-    `;
-
-                var taskContainer = document.getElementById("task-container");
-                taskContainer.appendChild(taskElement);
-
-                document.getElementById("task-title").value = '';
-                document.getElementById("task-description").value = '';
-                document.getElementById("end_date").value = '';
+                button.style.cursor = "default";
+                $(".content").load("task_user.php");
             } else {
                 alert('Error: ' + xhr.status);
             }
@@ -146,22 +110,13 @@ function finishTask(taskId) {
     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
     var data = "finish=true&taskid=" + taskId;
-
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === XMLHttpRequest.DONE) {
-            if (xhr.status === 200) {
-                var taskElement = document.querySelector(".task[data-task-id='" + taskId + "']");
-                let taskStatus = taskElement.querySelector(".status");
-                taskStatus.classList.remove("status-progress");
-                taskStatus.classList.add("status-complete");
-                taskStatus.textContent = "Finished";
-                let button = taskElement.querySelector(".finish-btn");
-                button.disabled = true;
-            } else {
-                alert('Error: ' + xhr.status);
-            }
-        }
-    };
+    var taskElement = document.querySelector(".task[data-task-id='" + taskId + "']");
+    let taskStatus = taskElement.querySelector(".status");
+    taskStatus.classList.remove("status-progress");
+    taskStatus.classList.add("status-complete");
+    taskStatus.textContent = "Finished";
+    let button = taskElement.querySelector(".finish-btn");
+    button.disabled = true;
     xhr.send(data);
 }
 
