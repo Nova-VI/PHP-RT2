@@ -1,8 +1,53 @@
-<form onsubmit="a()">
-    <label for="feedback">Feedback:</label><br>
-    <textarea id="feedback" name="feedback" rows="4" cols="50" required></textarea><br><br>
-    <input type="submit" value="Submit">
-</form>
+<style>
+    /* Style the form container */
+    .form-container {
+        max-width: 400px;
+        margin: 0 auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+    }
+
+    /* Style the form labels */
+    label {
+        font-weight: bold;
+    }
+
+    /* Style the textarea */
+    textarea {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+        resize: vertical; /* Allow vertical resize */
+    }
+
+    /* Style the submit button */
+    input[type="submit"] {
+        background-color: #4caf50;
+        color: white;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    /* Change submit button color on hover */
+    input[type="submit"]:hover {
+        background-color: #45a049;
+    }
+</style>
+
+<div class="form-container">
+    <form id="feedbackForm" onsubmit="a()">
+        <label for="feedback">Feedback:</label><br>
+        <textarea id="feedback" name="feedback" rows="4" cols="50" required></textarea><br><br>
+        <input type="submit" value="Submit">
+    </form>
+</div>
+
 <script>
     //simulate get method ( 7asb klem aymen khatro y9olk ekteb el code wmyfsrlkch chyamel)
     function a() {
@@ -11,6 +56,7 @@
         $(".content").load("support.php?feedback=" + encodeURIComponent(text));
     }
 </script>
+<div style="text-align: center;">
 <?php
 session_start();
 if (!isset($_SESSION['user'])) {
@@ -48,3 +94,4 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     }
 }
 ?>
+</div>
