@@ -1,3 +1,4 @@
+<?php include 'task_list.php'; ?>
 <style>
     #task-container {
         margin-top: 20px;
@@ -124,23 +125,27 @@
 
     .control-panel {
         display: flex;
-        justify-content: space-between;
+        flex-direction: column;
         align-items: center;
-        margin-bottom: 20px;
+        justify-content: center;
     }
 
     #filter-task {
-        margin-right: 10px;
-        width: fit-content;
-        padding: 0 0 0 40px;
-        border-left: 1px solid #ccc;
+        width: 100%;
+        display: flex;
+        justify-content: space-evenly;
+        padding: 30px;
+        border-bottom: 1px solid #ccc;
     }
 
-    #add-task {
-        display: inline-block;
-        margin-right: 10px;
-        width: fit-content;
 
+
+    #add-task {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 30px;
     }
 
     #add-task td {
@@ -150,43 +155,57 @@
 
     }
 
+    #add-task input {
+        width: 200px;
+        height: 60px;
+        border: 2px solid black;
+    }
+
+    #add-task textarea {
+        border: 2px solid black;
+    }
+
     #add-task td button {
         width: 100%;
+    }
+
+    .add-task-section {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .add-task-section>* {
+        margin: 20px;
     }
 </style>
 
 <div class="control-panel">
-
-    <table id="add-task">
-        <tr>
-            <th>
-                <h1>Add task</h1>
-            </th>
-            <td><input type="text" id="task-title" placeholder="Enter task title" name="title"></td>
-            <td><textarea style="resize: none" id="task-description" placeholder="Enter task description" name="description"></textarea></td>
-        </tr>
-        <tr>
-            <th>
-                <h1>End Date</h1>
-            </th>
-            <td><input type="date" id="end_date" name="end_date" value="<?php echo date("Y-m-d"); ?>"></td>
-            <td><button type="submit" onclick="addTask()" name="add">Add Task</button></td>
-        </tr>
-    </table>
     <div id="filter-task">
-        <h2>Filter tasks</h2>
         <div>
-            <input type="text" class="form-control" id="live_search" autocomplete="off" placeholder="Search...">
+            <input type="text" class="form-control" id="live_search" autocomplete="off" placeholder="Search..." style="border: 2px solid black; width:500px">
         </div>
         <div>
             <button type="button" onclick="sortByTitle()">Sort Alphabetically</button>
             <button type="button" onclick="sortByDate()">Sort by Date</button>
         </div>
     </div>
+    <div id="add-task">
+        <span class="add-task-section">
+            <h2>Add task</h2>
+            <input type="text" id="task-title" placeholder="Enter task title" name="title">
+            <textarea style="resize: none" id="task-description" placeholder="Enter task description" name="description"></textarea>
+        </span>
+        <span>
+            <h2>End Date</h2>
+            <input type="date" id="end_date" name="end_date" value="<?php echo date("Y-m-d"); ?>">
+            <button type="submit" onclick="addTask()" name="add">Add Task</button>
+        </span>
+    </div>
+
 </div>
 <div id="task-container">
     <?php
-    include 'task_list.php';
     $result = $_SESSION["result"];
     $today = date("Y-m-d");
     for ($i = 0; $i < count($result); $i++) {

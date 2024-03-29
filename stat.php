@@ -159,4 +159,8 @@ $totalTasksUndone = $userStatsManager->getTotalUndoneTasksForUser($userId);
     .stats-table .head {
         text-align: center;
     }
+
+    body {
+        background-color: #202020;
+    }
 </style>
