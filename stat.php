@@ -14,14 +14,14 @@ class UserStatsManager
     public function redirectToHomeIfNotUser()
     {
         if (!isset($_SESSION['user'])) {
-            header("Location: home.php");
+            header("Location: index.php");
             exit();
         }
     }
 
     public function calculateUserStats($userId, $startDate, $endDate)
     {
-        $query = "SELECT * FROM Task WHERE user_id = '$userId' AND DATE(completion_date) BETWEEN '$startDate' AND '$endDate'OR DATE(end_date) BETWEEN '$startDate' AND '$endDate' AND status!='In Progress'";
+        $query = "SELECT * FROM Task WHERE (user_id = '$userId') AND (DATE(completion_date) BETWEEN '$startDate' AND '$endDate'OR DATE(end_date) BETWEEN '$startDate' AND '$endDate' AND status!='In Progress')";
         return $this->calculateStats($query);
     }
 
@@ -64,9 +64,7 @@ $pdo = ConnexionBD::getInstance();
 
 $userStatsManager = new UserStatsManager($pdo);
 $userStatsManager->redirectToHomeIfNotUser();
-
 $userId = $_SESSION['user_entity']['id'];
-
 $today = date("Y-m-d");
 $lastWeek = date("Y-m-d", strtotime("-1 week"));
 $lastMonth = date("Y-m-d", strtotime("-1 month"));
@@ -81,46 +79,36 @@ $totalTasksUndone = $userStatsManager->getTotalUndoneTasksForUser($userId);
 ?>
 <table class="stats-table">
     <tr>
-        <th colspan="6">
+        <th colspan="4">
             <h1 class="stats-title" style="text-align: center;">Statistics</h1>
         </th>
     </tr>
     <tr>
         <th></th>
         <th class="head">Tasks Done</th>
-        <th class="head">Tasks Done (%)</th>
         <th class="head">Tasks Failed</th>
-        <th class="head">Tasks Failed (%)</th>
         <th class="head">Total</th>
     </tr>
     <tr>
         <th>Today</th>
-        <td><?php echo $userStats['today']['completedCount'] ?></td>
-        <td><?php echo $userStats['today']['completedPercentage'] ?>%</td>
-        <td><?php echo $userStats['today']['failedCount'] ?></td>
-        <td><?php echo $userStats['today']['failedPercentage'] ?>%</td>
+        <td><?php echo $userStats['today']['completedCount'] . " (" . $userStats['today']['completedPercentage'] . "%)" ?></td>
+        <td><?php echo $userStats['today']['failedCount'] . " (" . $userStats['today']['failedCount'] . "%)" ?></td>
         <td><?php echo $userStats['today']['totalTasks'] ?></td>
     </tr>
     <tr>
         <th>Last Week</th>
-        <td><?php echo $userStats['lastWeek']['completedCount'] ?></td>
-        <td><?php echo $userStats['lastWeek']['completedPercentage'] ?>%</td>
-        <td><?php echo $userStats['lastWeek']['failedCount'] ?></td>
-        <td><?php echo $userStats['lastWeek']['failedPercentage'] ?>%</td>
+        <td><?php echo $userStats['lastWeek']['completedCount'] . " (" . $userStats['lastWeek']['completedPercentage'] . "%)" ?></td>
+        <td><?php echo $userStats['lastWeek']['failedCount'] . " (" . $userStats['lastWeek']['failedPercentage'] . "%)" ?></td>
         <td><?php echo $userStats['lastWeek']['totalTasks'] ?></td>
     </tr>
     <tr>
         <th>Last Month</th>
-        <td><?php echo $userStats['lastMonth']['completedCount'] ?></td>
-        <td><?php echo $userStats['lastMonth']['completedPercentage'] ?>%</td>
-        <td><?php echo $userStats['lastMonth']['failedCount'] ?></td>
-        <td><?php echo $userStats['lastMonth']['failedPercentage'] ?>%</td>
+        <td><?php echo $userStats['lastMonth']['completedCount'] . " (" . $userStats['lastMonth']['completedPercentage'] . "%)" ?></td>
+        <td><?php echo $userStats['lastMonth']['failedCount'] . " (" . $userStats['lastMonth']['failedPercentage'] . "%)" ?></td>
         <td><?php echo $userStats['lastMonth']['totalTasks'] ?></td>
     </tr>
     <tr>
         <th>Pending Tasks</th>
-        <td></td>
-        <td></td>
         <td></td>
         <td></td>
         <td style="color:yellow;font-weight:bold"><?php echo $totalTasksUndone ?></td>
