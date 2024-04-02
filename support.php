@@ -2,9 +2,15 @@
     <form onsubmit="a()">
         <label class="form-label" for="feedback">Feedback:</label><br>
         <textarea id="feedback" name="feedback" rows="4" cols="50" class="form-textarea" required></textarea><br><br>
+        <div style="margin:0 0 30px 0"> or
+            <a href="mailto:taskmanagement@support.com?subject=Support Request&body=Dear Support Team," style="color:#505050;font-weight:bold">
+                send us a mail
+            </a>
+        </div>
         <div id="submit-message" class="submit-message"></div>
         <input type="submit" value="Submit" class="form-submit">
     </form>
+
 
 </div>
 
