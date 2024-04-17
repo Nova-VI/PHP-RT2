@@ -1,9 +1,9 @@
 <?php
 class ConnexionBD
 {
-    private static $_dbname = "sql11694152";
+    private static $_dbname = "task_";
     private static $_user = "sql11694152";
-    private static $_pwd = "bBcm9J2BrC";
+    private static $_pwd = "";
     private static $_host = "sql11.freesqldatabase.com";
     private static $_bdd = null;
     private function __construct()
